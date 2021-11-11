@@ -1,0 +1,8 @@
+---
+# Check if the Role is working with your Distribution and the Distribution Version
+- name: check if the Role is working with your Distribution and the Distribution Version
+  assert:
+    that:
+    - "ansible_distribution|lower|trim in __distribution"
+    - "ansible_distribution_major_version|int in __distribution[ansible_distribution|lower|trim]"
+    msg: "Your distribution or the distribution version is not compatible with the role: Distribution={{ __distribution.items()|join(',') }}"

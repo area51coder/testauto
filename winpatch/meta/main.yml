@@ -1,0 +1,17 @@
+galaxy_info:
+  author: abcd@gmail.com
+  description: Role to install updates and configure WSUS on a windows server
+  company: area51
+  license: 3-Clause BSD License
+  min_ansible_version: 2.9
+  platforms:
+  - name: Windows
+    versions:
+      - microsoft windows server 2008 r2 standard
+      - microsoft windows server 2012 standard
+      - microsoft windows server 2012 r2 standard
+      - microsoft windows server 2016 standard
+      - microsoft windows server 2019 standard
+  galaxy_tags: [system,patch,update,windows]
+dependencies: []
+allow_duplicates: true # Enable the role to be run more than once in a single playbook run

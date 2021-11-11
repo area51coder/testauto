@@ -1,0 +1,2 @@
+---
+__registerCommand: "wuauclt /detectnow /resetauthorization" #/reportnow"

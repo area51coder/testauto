@@ -1,0 +1,27 @@
+---
+# Check if reboot is required
+- name: Check if reboot is required
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired
+  register: __rebootRequired
+
+# Display if a reboot is currently pending on the server
+- name: Display Reboot required
+  debug:
+    var: __rebootRequired.exists
+
+# Search Windows updates
+- name: Search Windows updates
+  win_updates:
+    state: searched
+    reboot: no
+    reboot_timeout: 2400
+    whitelist: "{{ opatchWinUpdateWhitelist }}"
+    blacklist: "{{ opatchWinUpdateBlacklist }}"
+    category_names: "{{ opatchWinUpdateCategoryNames }}"
+  register: __searched
+
+# Display found update count
+- name: Display search results
+  debug:
+    msg: "Found updates  : {{ __searched.found_update_count }}"

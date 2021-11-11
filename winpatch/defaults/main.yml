@@ -1,0 +1,41 @@
+---
+# default variables for the role
+### More information in the README.md
+### see  for more information and example on you should name them
+
+### Mandatory Vars
+opatchWinRoleStates:
+
+### Optional vars
+## Update vars
+opatchWinUpdateWhitelist:                                  # List of the kb to whitelist, see readme for variable formating. Don't use with opatchWinUpdateBlacklist
+opatchWinUpdateBlacklist:                                  # List of the kb to blacklist, see readme for variable formating. Don't use with opatchWinUpdateWhitelist
+opatchWinUpdateCategoryNames:                              # A scalar or list of categories to install updates from.
+
+## Config vars : https://docs.microsoft.com/fr-fr/security-updates/windowsupdateservices/18127152
+# Windows Update Agent Environment Options Registry Keys
+opatchWinElevateNonAdmins: 0                              # Alow users in security groups to approve or disapprove updates
+opatchWinTargetGroup: "default"                           # Name of the computer group to which the computer belongs
+opatchWinTargetGroupEnabled: 1                            # Alow use of client-side targeting
+opatchWinWUServer: "http://:8530"                         # HTTP(S) URL of the WSUS server. Must be set to the same value as opatchWinWUStatusServer
+opatchWinWUStatusServer: "{{ opatchWinWUServer }}"        # HTTP(S) URL of the server to which reporting information will be sent. Must be set to the same value as opatchWinWUServer
+opatchWinDoNotConnectToWindowsUpdateInternetLocations: 0  # Enable windows to connect to Microsoft update online even if it has a configured WSUS Server
+# Automatic Update Configuration Options 
+opatchWinAUOptions: 3                                     # Auto download and install policy
+opatchWinAutoInstallMinorUpdates: 0                       # Auto install minor updates
+opatchWinDetectionFrequency: 22                           # Time between detection cycles. (1-22)
+opatchWinDetectionFrequencyEnabled: 0                     # Enable or disable detection frequency (disabled use default value of 22 hours)
+opatchWinNoAutoRebootWithLoggedOnUsers: 0                 # Let connected users choose to restart or let them know 5 min before reboot
+opatchWinNoAutoUpdate: 1                                  # Enable or disable auto updates
+opatchWinRebootRelaunchTimeout: 10                        # Time between prompting again for a scheduled restart
+opatchWinRebootRelaunchTimeoutEnabled: 0                  # Enable or disable custom RebootRelaunchTimeout (disable use 10 minutes default value)
+opatchWinRebootWarningTimeout: 5                          # Length, in minutes, of the restart warning countdown after installing updates with a deadline or scheduled updates. (1-30)
+opatchWinRebootWarningTimeoutEnabled: 0                   # Enable or disable the use of custom RebootWarningTimeout (disabled use the default value of 5 min)
+opatchWinRescheduleWaitTime: 5                            # Time, in minutes, that Automatic Updates should wait at startup before applying updates from a missed scheduled installation time. (1-60)
+opatchWinRescheduleWaitTimeEnabled: 0                     # Enable or disable the RescheduleWaitTime (attempt the missed installation during the next scheduled installation time).
+opatchWinScheduledInstallDay: 1                           # Days of the week from Sunday (1) to Saturday (7). (Only valid if AUOptions equals 4.)
+opatchWinScheduledInstallTime: 23                         # Time of the day where Scheduled install will happen (0-23)
+opatchWinUseWUServer: 1                                   # Enable or disable the WUServer value
+      
+## Check vars
+opatchWinCheckKB:                                  # List of KB to check if installed

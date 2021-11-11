@@ -1,0 +1,11 @@
+---
+# Get all installed updates list
+- name: Get all installed updates list
+  win_shell: "Get-Hotfix"
+  register: __updatelist
+  failed_when: __updatelist.rc>1
+
+# Display installed updates list
+- name: Display installed updates list
+  debug:
+    msg: "{{ __updatelist.stdout_lines if __updatelist.stdout_lines != [] else 'No installed updates found' }}"

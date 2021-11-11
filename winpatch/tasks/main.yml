@@ -1,0 +1,25 @@
+---
+# main.yml contains only include instructions for a better reading,
+# check if the Role is working with your Distribution and the Distribution Version
+- name: Include the controls task file
+  include_tasks: control.yml
+
+# include vars for current operating system in case the role works with multiple distribution
+- name: include vars for current operating system
+  include_vars: "{{ ansible_distribution|lower|trim|regex_replace ('^.*([0-9]{4}) (r2|).*$', '\\1\\2') }}.yml"
+
+# Include desired funtionnalities files
+- name: Include desired funtionnalities files
+  include_tasks: "{{ lookup('first_found', __file_list) }}"
+  vars:
+    __file_list:
+      - "{{ state }}_{{ ansible_distribution|lower }}_{{ ansible_distribution_major_version }}.yml"
+      - "{{ state }}_{{ ansible_distribution|lower }}_{{ ansible_distribution_version }}.yml"
+      - "{{ state }}_{{ ansible_os_family|lower }}_{{ ansible_distribution_major_version }}.yml"
+      - "{{ state }}_{{ ansible_distribution|lower }}.yml"
+      - "{{ state }}_{{ ansible_os_family|lower }}.yml"
+      - "{{ state }}_{{ ansible_system|lower }}.yml"
+      - "{{ state }}.yml"
+  loop: "{{ opatchWinRoleStates if (opatchWinRoleStates|type_debug == 'list') else [opatchWinRoleStates] }}"
+  loop_control:
+    loop_var: state

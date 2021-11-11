@@ -1,0 +1,20 @@
+---
+# Include Search tasks
+- name: include windows update tasks
+  include_tasks: searched.yml
+
+# Download Windows updates
+- name: Download Windows updates
+  win_updates:
+    state: downloaded
+    reboot: no
+    reboot_timeout: 2400
+    whitelist: "{{ opatchWinUpdateWhitelist }}"
+    blacklist: "{{ opatchWinUpdateBlacklist }}"
+    category_names: "{{ opatchWinUpdateCategoryNames }}"
+  register: __downloaded
+
+# Display found update count
+- name: Display search results
+  debug:
+    msg: "Found updates  : {{ __downloaded.found_update_count }}"

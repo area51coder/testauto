@@ -1,0 +1,151 @@
+---
+# 
+#
+# Redistribution and use in source and binary forms, with or without modification,
+# are permitted provided that the following conditions are met:
+#
+# 1. Redistributions of source code must retain the above copyright notice,
+#    this list of conditions and the following disclaimer.
+#
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+#
+# 3. Neither the name of the copyright holder nor the names of its contributors
+#    may be used to endorse or promote products derived from this software
+#    without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+# ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Local variables for this role (can't be overrided).
+# 
+
+# Compatibility matrice
+#<---------------------------------------------------------------------->
+__distribution:
+  # Compatibility values for windows: [ 6, 10 ] # 6 (6.1.7601.65536) = 2008r2 | 6 (6.2.9200.0) = 2012 | 6 (6.3.9600.0) = 2012r2 | 10 (10.0.14393.0) = 2016 |
+  microsoft windows server 2008 r2 standard: [ 6 ]
+  microsoft windows server 2012 standard: [ 6 ]
+  microsoft windows server 2012 r2 standard: [ 6 ]
+  microsoft windows server 2016 standard: [ 10 ]
+  microsoft windows server 2019 standard: [ 10 ]
+
+# Add more local variables here starting with `__` (double underscore), like `__myLocalVariableInCamelCase`
+# local variables don't need `orolename` in prefix because it's not exposed outside of the role.
+__wsusRegistryKeys:
+  ## Windows Update Agent Environment Options Registry Keys
+  # DoNotConnectToWindowsUpdateInternetLocations
+  - name: "DoNotConnectToWindowsUpdateInternetLocations"
+    path: 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\'
+    data: "{{ opatchWinDoNotConnectToWindowsUpdateInternetLocations }}"
+    type: dword
+  # ElevateNonAdmins
+  - name: "ElevateNonAdmins"
+    path: 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\'
+    data: "{{ opatchWinElevateNonAdmins }}"
+    type: dword
+  # TargetGroup
+  - name: "TargetGroup"
+    path: 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\'
+    data: "{{ opatchWinTargetGroup }}"
+    type: string
+  # TargetGroupEnabled
+  - name: "TargetGroupEnabled"
+    path: 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\'
+    data: "{{ opatchWinTargetGroupEnabled }}"
+    type: dword
+  # WUServer
+  - name: "WUServer"
+    path: 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\'
+    data: "{{ opatchWinWUServer }}"
+    type: string
+  # WUStatusServer
+  - name: "WUStatusServer"
+    path: 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\'
+    data: "{{ opatchWinWUStatusServer }}"
+    type: string
+  ## Automatic Update Configuration Options
+  # AUOptions
+  - name: "AUOptions"
+    path: 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU'
+    data: "{{ opatchWinAUOptions }}"
+    type: dword
+  # AutoInstallMinorUpdates
+  - name: "AutoInstallMinorUpdates"
+    path: 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU'
+    data: "{{ opatchWinAutoInstallMinorUpdates }}"
+    type: dword
+  # DetectionFrequency
+  - name: "DetectionFrequency"
+    path: 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU'
+    data: "{{ opatchWinDetectionFrequency }}"
+    type: dword
+  # DetectionFrequencyEnabled
+  - name: "DetectionFrequencyEnabled"
+    path: 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU'
+    data: "{{ opatchWinDetectionFrequencyEnabled }}"
+    type: dword
+  # NoAutoRebootWithLoggedOnUsers
+  - name: "NoAutoRebootWithLoggedOnUsers"
+    path: 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU'
+    data: "{{ opatchWinNoAutoRebootWithLoggedOnUsers }}"
+    type: dword
+  # NoAutoUpdate
+  - name: "NoAutoUpdate"
+    path: 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU'
+    data: "{{ opatchWinNoAutoUpdate }}"
+    type: dword
+  # RebootRelaunchTimeout
+  - name: "RebootRelaunchTimeout"
+    path: 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU'
+    data: "{{ opatchWinRebootRelaunchTimeout }}"
+    type: dword
+  # RebootRelaunchTimeoutEnabled
+  - name: "RebootRelaunchTimeoutEnabled"
+    path: 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU'
+    data: "{{ opatchWinRebootRelaunchTimeoutEnabled }}"
+    type: dword
+  # RebootWarningTimeout
+  - name: "RebootWarningTimeout"
+    path: 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU'
+    data: "{{ opatchWinRebootWarningTimeout }}"
+    type: dword
+  # RebootWarningTimeoutEnabled
+  - name: "RebootWarningTimeoutEnabled"
+    path: 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU'
+    data: "{{ opatchWinRebootWarningTimeoutEnabled }}"
+    type: dword
+  # RescheduleWaitTime
+  - name: "RescheduleWaitTime"
+    path: 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU'
+    data: "{{ opatchWinRescheduleWaitTime }}"
+    type: dword
+  # RescheduleWaitTimeEnabled
+  - name: "RescheduleWaitTimeEnabled"
+    path: 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU'
+    data: "{{ opatchWinRescheduleWaitTimeEnabled }}"
+    type: dword
+  # ScheduledInstallDay
+  - name: "ScheduledInstallDay"
+    path: 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU'
+    data: "{{ opatchWinScheduledInstallDay }}"
+    type: dword
+  # ScheduledInstallTime
+  - name: "ScheduledInstallTime"
+    path: 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU'
+    data: "{{ opatchWinScheduledInstallTime }}"
+    type: dword
+  # UseWUServer
+  - name: "UseWUServer"
+    path: 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU'
+    data: "{{ opatchWinUseWUServer }}"
+    type: dword

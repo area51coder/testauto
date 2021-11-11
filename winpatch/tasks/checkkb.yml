@@ -1,0 +1,19 @@
+---
+# Check if opatchWinCheckKB is defined and not empty
+- name: Check if opatchWinCheckKB is defined and not empty
+  assert:
+    that:
+    - opatchWinCheckKB is defined
+    - not opatchWinCheckKB
+    msg: "opatchWinCheckKB needs to be defined with at least one KB number to use checkkb option"
+
+# Get all installed updates list
+- name: Get KB Status
+  win_shell: "Get-Hotfix {{ opatchWinCheckKB }}"
+  register: __hotfixlist
+  failed_when: __hotfixlist.rc>1
+
+# Display installed updates list
+- name: Display KB Status
+  debug:
+    msg: "{{ __hotfixlist.stdout_lines if __hotfixlist.stdout_lines != [] else 'KB not found' }}"

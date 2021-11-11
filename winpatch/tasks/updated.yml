@@ -1,0 +1,55 @@
+---
+- block:
+  # Include Search tasks
+  - name: include windows update tasks
+    include_tasks: searched.yml
+
+  # Reboot before install if needed
+  - name: Reboot before install if needed
+    win_reboot:
+      reboot_timeout: 1200
+    when: __rebootRequired.exists
+
+  # Download and install Windows updates
+  - name: Download and install Windows updates
+    win_updates:
+      state: installed
+      reboot: yes
+      reboot_timeout: 2400
+      whitelist: "{{ opatchWinUpdateWhitelist }}"
+      blacklist: "{{ opatchWinUpdateBlacklist }}"
+      category_names: "{{ opatchWinUpdateCategoryNames }}"
+    register: __installed
+
+  # Display install results
+  - name: Display install results
+    debug:
+      msg:
+        - "Found updates     : {{ __installed.found_update_count }}"
+        - "Installed updates : {{ __installed.installed_update_count }}"
+
+  # Rescue if if update install failed
+  # This is used in case must absolutelly reboot the server before continuing installing other updates
+  rescue:
+  # Reboot windows to retry update installation
+  - name: Reboot Windows to retry update installation
+    win_reboot:
+      reboot_timeout: 1200
+
+  # Download and install Windows updates
+  - name: Download and install Windows updates
+    win_updates:
+      state: installed
+      reboot: yes
+      reboot_timeout: 2400
+      whitelist: "{{ opatchWinUpdateWhitelist }}"
+      blacklist: "{{ opatchWinUpdateBlacklist }}"
+      category_names: "{{ opatchWinUpdateCategoryNames }}"
+    register: __retry
+
+  # Display retry results
+  - name: Display retry results
+    debug:
+      msg:
+        - "Found updates     : {{ __retry.found_update_count }}"
+        - "Installed updates : {{ __retry.installed_update_count }}"

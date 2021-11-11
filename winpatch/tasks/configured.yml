@@ -1,0 +1,27 @@
+---
+# Update WSUS registry config
+- name: Update WSUS registry config
+  win_regedit:
+    path: "{{ item.path }}"
+    name: "{{ item.name }}"
+    data: "{{ item.data }}"
+    type: "{{ item.type }}"
+  loop: "{{ __wsusRegistryKeys }}"
+
+# Restart update services
+- name: Restart update services
+  win_service:
+    name: "{{ item }}"
+    state: restarted
+  loop:
+    - BITS     # Background Intelligent Transfer Service
+    - wuauserv # Windows Update
+
+# Pause 30 seconds to be sure that services are started
+- name: Pause 30 seconds
+  pause:
+    seconds: 30
+
+# Register to WSUS
+- name: Register to WSUS
+  win_command: "{{ __registerCommand }}" #"wuauclt /detectnow /resetauthorization"
